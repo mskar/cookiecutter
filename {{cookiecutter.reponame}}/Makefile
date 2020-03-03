@@ -27,7 +27,7 @@ environment.yml:
 git: .git/
 
 .git/:
-	curl https://api.github.com/user/repos --data "{'name':'$(PROJ_NAME)','description':'$(PROJ_DESC)'}" --user $(USER_NAME)
+	curl https://api.github.com/user/repos --data '{"name":"$(PROJ_NAME)","description":"$(PROJ_DESC)"}' --user $(USER_NAME)
 	test -f README.md || echo "$(PROJ_NAME)" >> README.md
 	git init
 	git add --all
