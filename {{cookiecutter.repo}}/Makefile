@@ -1,7 +1,7 @@
-OS = MacOSX
-PROJ_NAME = cc
-PROJ_DESC = "A cookiecutter template for Python and/or R projects."
-USER_NAME = marskar
+OS = {{cookiecutter.os}}
+PROJ_NAME = {{cookiecutter.projname}}
+PROJ_DESC = {{cookiecutter.projdesc}}
+USER_NAME = {{cookiecutter.username}}
 VENV_NAME = $(PROJ_NAME)
 VENV_PATH = ~/miniconda/envs/$(VENV_NAME)
 REPO_NAME = $(PROJ_NAME)
@@ -10,10 +10,10 @@ all: env git
 
 # Conda environment setup
 ~/miniconda:
-	-curl https://repo.anaconda.com/miniconda/Miniconda3-latest-$(OS)-x86_64.sh -o ~/miniconda.sh
-	-bash ~/miniconda.sh -bp ~/miniconda
+	curl https://repo.anaconda.com/miniconda/Miniconda3-latest-$(OS)-x86_64.sh -o ~/miniconda.sh
+	bash ~/miniconda.sh -bp ~/miniconda
 
-env: $(VENV_PATH)/bin/activate
+env: $(VENV_PATH)/bin/activate ~/miniconda
 
 $(VENV_PATH)/bin/activate: environment.yml
 	conda env update -n $(VENV_NAME) --file environment.yml
