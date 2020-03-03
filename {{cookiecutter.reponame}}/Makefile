@@ -20,7 +20,7 @@ $(VENV_PATH)/bin/activate: environment.yml
 	touch $(VENV_PATH)/bin/activate
 
 environment.yml:
-	conda create -yn $(VENV_NAME)
+	conda create -yn $(VENV_NAME) python=3
 	conda env export --from-history -n $(VENV_NAME) > environment.yml
 
 # Git setup
@@ -58,12 +58,12 @@ pytest: $(VENV_PATH)/bin/black pytest.ini
 	$(VENV_PATH)/bin/pytest
 
 $(VENV_PATH)/bin/black:
-	conda install -n $(VENV_NAME) python=3.8 black
+	conda install -n $(VENV_NAME) black
 	conda env export --from-history -n $(VENV_NAME) > environment.yml
 	touch $(VENV_PATH)/bin/activate
 
 $(VENV_PATH)/bin/pytest:
-	conda install -n $(VENV_NAME) python=3.8 pytest pytest-mypy
+	conda install -n $(VENV_NAME) pytest pytest-mypy
 	conda env export --from-history -n $(VENV_NAME) > environment.yml
 	touch $(VENV_PATH)/bin/activate
 
