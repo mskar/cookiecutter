@@ -23,16 +23,20 @@ environment.yml:
 	conda create -yn $(VENV_NAME) python=3
 	conda env export --from-history -n $(VENV_NAME) > environment.yml
 
-# Git setup
+# Git setup (assumes identical github and bitbucket usernames)
 git: .git/
 
 .git/:
-	curl https://api.github.com/user/repos --data '{"name":"$(PROJ_NAME)","description":"$(PROJ_DESC)"}' --user $(USER_NAME)
+	curl --data '{"name":"$(PROJ_NAME)","description":"$(PROJ_DESC)"}' --user $(USER_NAME) https://api.github.com/user/repos
+	curl --data '{"description":"$(PROJ_DESC)"}' --header "Content-Type: application/json" --request POST --user $(USER_NAME) https://api.bitbucket.org/2.0/repositories/$(USER_NAME)/$(REPO_NAME)
 	test -f README.md || echo "$(PROJ_NAME)" >> README.md
 	git init
 	git add --all
 	git commit --message "First commit to the project named $(PROJ_NAME)"
 	git remote add origin https://github.com/$(USER_NAME)/$(REPO_NAME)
+	git remote set-url origin https://$(USER_NAME)@bitbucket.org/$(USER_NAME)/$(REPO_NAME) --add
+	git remote add hub https://github.com/$(USER_NAME)/$(REPO_NAME)
+	git remote add bit https://$(USER_NAME)@bitbucket.org/$(USER_NAME)/$(REPO_NAME)
 	git push --set-upstream origin master
 
 # Git workflow
