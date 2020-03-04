@@ -9,11 +9,11 @@ REPO_NAME = $(PROJ_NAME)
 all: env git
 
 # Conda environment setup
+env: ~/miniconda $(VENV_PATH)/bin/activate
+
 ~/miniconda:
 	curl https://repo.anaconda.com/miniconda/Miniconda3-latest-$(OS)-x86_64.sh -o ~/miniconda.sh
 	bash ~/miniconda.sh -bp ~/miniconda
-
-env: $(VENV_PATH)/bin/activate ~/miniconda
 
 $(VENV_PATH)/bin/activate: environment.yml
 	conda env update -n $(VENV_NAME) --file environment.yml
@@ -51,11 +51,10 @@ amend:
 	git push --force
 
 # Python-specific section (delete if not needed)
+python: pyignore $(VENV_PATH)/bin/black $(VENV_PATH)/bin/pytest
+
 pyignore:
 	curl https://raw.githubusercontent.com/github/gitignore/master/Python.gitignore >> .gitignore
-
-pytest: $(VENV_PATH)/bin/black pytest.ini
-	$(VENV_PATH)/bin/pytest
 
 $(VENV_PATH)/bin/black:
 	conda install -n $(VENV_NAME) black
@@ -67,6 +66,9 @@ $(VENV_PATH)/bin/pytest:
 	conda env export --from-history -n $(VENV_NAME) > environment.yml
 	touch $(VENV_PATH)/bin/activate
 
+pytest: $(VENV_PATH)/bin/black pytest.ini
+	$(VENV_PATH)/bin/pytest
+
 pytest.ini:
 	echo "[pytest]\naddopts = --doctest-modules --mypy --mypy-ignore-missing-imports" > pytest.ini
 
@@ -74,6 +76,8 @@ pylint: $(VENV_PATH)/bin/black
 	$(VENV_PATH)/bin/black
 
 # R-specific section (delete if not needed)
+r: rignore $(VENV_PATH)/lib/R/library/testthat $(VENV_PATH)/lib/R/library/styler
+
 rignore:
 	curl https://raw.githubusercontent.com/github/gitignore/master/R.gitignore >> .gitignore
 
@@ -94,4 +98,4 @@ rtest: $(VENV_PATH)/lib/R/library/testthat
 rlint: $(VENV_PATH)/lib/R/library/styler
 	$(VENV_PATH)/bin/Rscript -e "styler::style_dir()"
 
-.PHONY: env git add commit push amend pytest pylint rtest rlint
+.PHONY: env git add commit push amend pyignore pytest pylint rignore rtest rlint

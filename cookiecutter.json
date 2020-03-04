@@ -1,10 +1,10 @@
 {
     "os":  ["MacOSX", "Linux"],
     "author": "Your name (or your organization/company/team)",
-    "projname": "project",
-    "projdesc": "A short description of the project.",
-    "reponame": "{{ cookiecutter.projname.lower().replace(' ', '_') }}",
     "username": "{{ cookiecutter.author.lower().replace(' ', '_') }}",
+    "projname": "My Project",
+    "reponame": "{{ cookiecutter.projname.lower().replace(' ', '_') }}",
+    "projdesc": "A short description of the project.",
     "license": [
         "MIT license",
         "BSD license",
