@@ -28,7 +28,7 @@ environment.yml:
 git: .git/
 
 .git/:
-	curl --data '{"name":"$(REPO_NAME)","description":"$(PROJ_DESC)","private":"$(IS_PRIVATE)","homepage":"$(HOME_PAGE)"}' --user $(USER_NAME) https://api.github.com/user/repos
+	curl --data '{"name":"$(REPO_NAME)","description":"$(PROJ_DESC)","private":$(IS_PRIVATE),"homepage":"$(HOME_PAGE)"}' --user $(USER_NAME) https://api.github.com/user/repos
 	curl --data '{"description":"$(PROJ_DESC)","is_private":"$(IS_PRIVATE)","website":"$(HOME_PAGE)"}' --header "Content-Type: application/json" --user $(USER_NAME) https://api.bitbucket.org/2.0/repositories/$(USER_NAME)/$(REPO_NAME)
 	git init
 	git add --all
