@@ -29,7 +29,6 @@ git: .git/
 
 .git/:
 	curl --data '{"name":"$(REPO_NAME)","description":"$(PROJ_DESC)","private":"$(IS_PRIVATE)","homepage":"$(HOME_PAGE)"}' --user $(USER_NAME) https://api.github.com/user/repos
-	curl --data '{"source":{"branch":"master","path":"/docs"}}' --header "ACCEPT: application/vnd.github.switcheroo-preview+json" --user $(USER_NAME) https://api.github.com/repos/$(USER_NAME)/$(REPO_NAME)/pages
 	curl --data '{"description":"$(PROJ_DESC)","is_private":"$(IS_PRIVATE)","website":"$(HOME_PAGE)"}' --header "Content-Type: application/json" --user $(USER_NAME) https://api.bitbucket.org/2.0/repositories/$(USER_NAME)/$(REPO_NAME)
 	git init
 	git add --all
@@ -39,6 +38,7 @@ git: .git/
 	git remote add hub https://github.com/$(USER_NAME)/$(REPO_NAME)
 	git remote add bit https://$(USER_NAME)@bitbucket.org/$(USER_NAME)/$(REPO_NAME)
 	git push --set-upstream origin master
+	curl --data '{"source":{"branch":"master","path":"/docs"}}' --header "ACCEPT: application/vnd.github.switcheroo-preview+json" --user $(USER_NAME) https://api.github.com/repos/$(USER_NAME)/$(REPO_NAME)/pages
 
 # Git workflow
 add: git
