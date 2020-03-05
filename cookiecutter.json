@@ -1,10 +1,11 @@
 {
-    "os":  ["MacOSX", "Linux"],
-    "author": "Your name (or your organization/company/team)",
-    "username": "{{ cookiecutter.author.lower().replace(' ', '_') }}",
-    "projname": "My Project",
-    "reponame": "{{ cookiecutter.projname.lower().replace(' ', '_') }}",
-    "projdesc": "A short description of the project.",
+    "mac_linux": ["MacOSX", "Linux"],
+    "full_name": "Your name (or your organization/company/team)",
+    "user_name": "{{ cookiecutter.full_name.lower().replace(' ', '_') }}",
+    "proj_name": "My Project",
+    "proj_desc": "A short description of the project.",
+    "repo_name": "{{ cookiecutter.proj_name.lower().replace(' ', '_') }}",
+    "is_private": ["false", "true"],
     "license": [
         "MIT license",
         "BSD license",

@@ -1,7 +1,8 @@
-OS = {{cookiecutter.os}}
-PROJ_NAME = {{cookiecutter.projname}}
-PROJ_DESC = {{cookiecutter.projdesc}}
-USER_NAME = {{cookiecutter.username}}
+MAC_LINUX = {{cookiecutter.mac_linux}}
+PROJ_NAME = {{cookiecutter.proj_name}}
+PROJ_DESC = {{cookiecutter.proj_desc}}
+USER_NAME = {{cookiecutter.user_name}}
+IS_PRIVATE = {{cookiecutter.is_private}}
 VENV_NAME = $(PROJ_NAME)
 VENV_PATH = ~/miniconda/envs/$(VENV_NAME)
 REPO_NAME = $(PROJ_NAME)
@@ -27,9 +28,8 @@ environment.yml:
 git: .git/
 
 .git/:
-	curl --data '{"name":"$(PROJ_NAME)","description":"$(PROJ_DESC)"}' --user $(USER_NAME) https://api.github.com/user/repos
-	curl --data '{"description":"$(PROJ_DESC)"}' --header "Content-Type: application/json" --request POST --user $(USER_NAME) https://api.bitbucket.org/2.0/repositories/$(USER_NAME)/$(REPO_NAME)
-	test -f README.md || echo "$(PROJ_NAME)" >> README.md
+	curl --data '{"name":"$(PROJ_NAME)","description":"$(PROJ_DESC)","private":"$(IS_PRIVATE)"}' --user $(USER_NAME) https://api.github.com/user/repos
+	curl --data '{"description":"$(PROJ_DESC)","is_private":"$(IS_PRIVATE)"}' --header "Content-Type: application/json" --user $(USER_NAME) https://api.bitbucket.org/2.0/repositories/$(USER_NAME)/$(REPO_NAME)
 	git init
 	git add --all
 	git commit --message "First commit to the project named $(PROJ_NAME)"

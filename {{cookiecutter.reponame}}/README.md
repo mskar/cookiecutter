@@ -1,5 +1,5 @@
-# {{cookiecutter.projname}}
+# {{cookiecutter.proj_name}}
 
-{{cookiecutter.projdesc}}
+{{cookiecutter.proj_desc}}
 
-by {{cookiecutter.author}}
+by {{cookiecutter.full_name}}
