@@ -1,11 +1,11 @@
 MAC_LINUX = {{cookiecutter.mac_linux}}
-PROJ_NAME = {{cookiecutter.proj_name}}
-PROJ_DESC = {{cookiecutter.proj_desc}}
 USER_NAME = {{cookiecutter.user_name}}
+REPO_NAME = {{cookiecutter.repo_name}}
+PROJ_DESC = {{cookiecutter.proj_desc}}
 IS_PRIVATE = {{cookiecutter.is_private}}
-VENV_NAME = $(PROJ_NAME)
+HOME_PAGE = https://$(USER_NAME).github.io/$(REPO_NAME)
+VENV_NAME = $(REPO_NAME)
 VENV_PATH = ~/miniconda/envs/$(VENV_NAME)
-REPO_NAME = $(PROJ_NAME)
 
 all: env git
 
@@ -13,7 +13,7 @@ all: env git
 env: ~/miniconda $(VENV_PATH)/bin/activate
 
 ~/miniconda:
-	curl https://repo.anaconda.com/miniconda/Miniconda3-latest-$(OS)-x86_64.sh -o ~/miniconda.sh
+	curl https://repo.anaconda.com/miniconda/Miniconda3-latest-$(MAC_LINUX)-x86_64.sh -o ~/miniconda.sh
 	bash ~/miniconda.sh -bp ~/miniconda
 
 $(VENV_PATH)/bin/activate: environment.yml
@@ -28,11 +28,12 @@ environment.yml:
 git: .git/
 
 .git/:
-	curl --data '{"name":"$(PROJ_NAME)","description":"$(PROJ_DESC)","private":"$(IS_PRIVATE)"}' --user $(USER_NAME) https://api.github.com/user/repos
-	curl --data '{"description":"$(PROJ_DESC)","is_private":"$(IS_PRIVATE)"}' --header "Content-Type: application/json" --user $(USER_NAME) https://api.bitbucket.org/2.0/repositories/$(USER_NAME)/$(REPO_NAME)
+	curl --data '{"name":"$(REPO_NAME)","description":"$(PROJ_DESC)","private":"$(IS_PRIVATE)","homepage":"$(HOME_PAGE)"}' --user $(USER_NAME) https://api.github.com/user/repos
+	curl --data '{"source":{"branch":"master","path":"/docs"}}' --user $(USER_NAME) https://api.github.com/user/repos/$(USER_NAME)/$(REPO_NAME)/pages
+	curl --data '{"description":"$(PROJ_DESC)","is_private":"$(IS_PRIVATE)","website":"$(HOME_PAGE)"}' --header "Content-Type: application/json" --user $(USER_NAME) https://api.bitbucket.org/2.0/repositories/$(USER_NAME)/$(REPO_NAME)
 	git init
 	git add --all
-	git commit --message "First commit to the project named $(PROJ_NAME)"
+	git commit --message "First commit to the project named $(REPO_NAME)"
 	git remote add origin https://github.com/$(USER_NAME)/$(REPO_NAME)
 	git remote set-url origin https://$(USER_NAME)@bitbucket.org/$(USER_NAME)/$(REPO_NAME) --add
 	git remote add hub https://github.com/$(USER_NAME)/$(REPO_NAME)
